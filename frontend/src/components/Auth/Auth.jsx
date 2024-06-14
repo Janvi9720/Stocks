@@ -4,18 +4,18 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser, registerUser } from '../../actions/auth';
 import { AUTH_ERROR_OCCURRED } from '../../constants/actions';
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', userType: 'user' };
+const initialState = { firstName: '', lastName: '', email: '', password: ''};
 
 const Auth = () => {
   const errors = useSelector((state) => state.authErrorsReducer);
   const [form, setForm] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
-  const [isAdmin, setisAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state } = useLocation();
-
+  
   useEffect(() => {
     dispatch({ type: AUTH_ERROR_OCCURRED, payload: "" });
     return () => {
@@ -33,17 +33,20 @@ const Auth = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
   };
 
+  
+
   const handleSubmit = (e) => {
+    setForm((prevForm) => ({ ...prevForm, "userType": isAdmin ? 'admin' : 'user' }));
     e.preventDefault();
     setIsLoading(true);
-    setForm({ ...form, "userType": isAdmin ? 'admin' : 'user' });
+    let newForm = {firstName: form.firstName, lastName: form.lastName, email: form.email, password: form.password, userType: isAdmin ? 'admin' : 'user'}
     dispatch({ type: AUTH_ERROR_OCCURRED, payload: "" });
     if (isSignup) {
       if (isAdmin && form.secretCode !== process.env.REACT_APP_ADMIN_SECRET_CODE) {
         dispatch({ type: AUTH_ERROR_OCCURRED, payload: "Incorrect Secret code!" });
         setIsLoading(false);
       } else {
-        dispatch(registerUser(form, navigate, state));
+        dispatch(registerUser(newForm, navigate, state));
       }
     } else {
       dispatch(loginUser(form, navigate, state));
@@ -122,8 +125,8 @@ const Auth = () => {
 
         {isSignup &&
           <div className="flex items-center justify-center mt-6">
-            <button type="submit"
-              onClick={() => setisAdmin(!isAdmin)}
+            <button type="button"
+              onClick={() => setIsAdmin(!isAdmin)}
               className="flex items-center justify-center w-full px-6 py-2 text-sm font-medium text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:bg-blue-400 focus:outline-none">
 
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
