@@ -39,8 +39,8 @@ const Landing = () => {
                 >
                   Browse Markets
                 </Link>
-                {user ? ( !survey &&
-                  <Link
+                {user ? ( (survey.survey === null) &&      
+                            <Link
                     to="/survey"
                     className="mt-2 sm:mt-0 px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md dark:bg-blue-800 hover:bg-blue-500 dark:hover:bg-blue-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-blue-700"
                   >
