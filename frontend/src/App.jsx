@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./components/Dashboard/UserDashboard";
 import Auth from "./components/Auth/Auth";
 import Careers from "./components/Careers/Careers";
 import Footer from "./components/Footer/Footer";
@@ -17,6 +17,9 @@ import TransactionForm from "./components/TransactionForm/TransactionForm";
 import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 import BlogDetail from "./components/AdminDashboard/Blogs/BlogDetails";
 import Survey from "./components/Survey/Survey"
+import { useDispatch } from 'react-redux';
+import { getUserInfo } from "./actions/auth";
+import BlogParent from "./components/AdminDashboard/Blogs/Blog";
 
 const ProtectedRoute = ({ isAuthenticated, children }) => {
   if (!isAuthenticated) {
@@ -28,8 +31,13 @@ const ProtectedRoute = ({ isAuthenticated, children }) => {
 
 const App = () => {
   const [user] = useState(JSON.parse(localStorage.getItem("profile")));
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getUserInfo());
+    },[dispatch])
+    
   const isAuthenticated = user ? true : false; // Replace with your authentication logic
-
   const location = useLocation();
   const shouldRenderFooter = location.pathname !== "/dashboard";
   return (
@@ -40,10 +48,10 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/blog/:id" element={<BlogDetail />} />
+            <Route path="/blogs" element={<BlogParent />} />
             <Route path="/guide" element={<Guide />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/markets" element={<Markets />} />
-            <Route path="/auth" element={<Auth />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/survey" element={<Survey />} />
             <Route path="/stock/:id" element={<StockDetails />} />

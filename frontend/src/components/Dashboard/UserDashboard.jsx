@@ -303,7 +303,7 @@ const Dashboard = () => {
               </nav>
             </div>
 
-            <div className="w-full sm:w-5/6 p-[2%]">{shownTab(currentTab)}</div>
+            <div className="w-full sm:w-5/6 p-[2%] overflow-y-scroll h-[100vh]">{shownTab(currentTab)}</div>
           </div>
         </div>
       </div>

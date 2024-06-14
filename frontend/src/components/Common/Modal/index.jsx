@@ -1,8 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 
 export default function Modal(props) {
-    console.log("showModal", props);
-
     return (
         <Transition show={props.showModal}>
             <Dialog className="relative z-10 " onClose={props.handleCloseModal}>

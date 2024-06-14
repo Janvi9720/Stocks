@@ -34,8 +34,6 @@ const StockView = () => {
     dispatch(getStocks(), getUserList());
   }, [dispatch]);
 
-  console.log("users", users);
-
   useEffect(() => {
     socket.connect();
     dispatch({ type: MARKET_ERROR_OCCURRED, payload: "" });

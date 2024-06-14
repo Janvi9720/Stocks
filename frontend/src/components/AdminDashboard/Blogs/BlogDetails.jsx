@@ -24,25 +24,36 @@ const BlogDetail = () => {
     return <div>Loading...</div>;
   }
 
+  const sanitizeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.innerHTML;
+  };
+
+  // const handleDeleteBlog = () => {
+  //   dispatch(removeBlog(blog._id));
+  // }
+
   return (
     <>
-      <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
+      <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16 relative">
         <div
-          class="bg-cover bg-center text-center overflow-hidden bg-[length:100%_300px] bg-no-repeat"
+          className="bg-cover bg-center text-center overflow-hidden bg-[length:100%_300px] bg-no-repeat"
           style={{
             minHeight: "300px",
             backgroundImage: `url(${process.env.REACT_APP_STOCKS_API}?filename=${blog.image})`,
-          }}
-          title={blog.title}
-        ></div>
-        <div class="max-w-3xl mx-auto">
-          <div class="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
-            <div class="bg-white relative top-0 -mt-32 p-5 sm:p-10">
-              <h1 href="#" class="text-gray-900 font-bold text-3xl mb-2">
+            }}
+            title={blog.title}
+            ></div>
+        <div className="max-w-3xl mx-auto">
+          <div className="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
+            <div className="bg-white relative top-0 -mt-32 p-5 sm:p-10">
+            {/* <button>Update</button> */}
+            {/* <button onClick={handleDeleteBlog} className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-[#374151] rounded-md focus:outline-none focus:bg-gray-600">Delete</button> */}
+              <h1 href="#" className="text-gray-900 font-bold text-3xl mb-2">
                 {blog.title}
               </h1>
-              <p class="text-gray-700 text-xs mt-2">{blog.tag} {new Date(blog.create_at).toISOString().split("T")[0]}</p>
-              <p class="text-base leading-8 my-5">{blog.content}</p>
+              <p className="text-gray-700 text-xs mt-2">{blog.tag} {new Date(blog.create_at).toISOString().split("T")[0]}</p>
+              <div className="text-base leading-8 my-5" dangerouslySetInnerHTML={{ __html: sanitizeHtml(blog.content) }}></div>
             </div>
           </div>
         </div>

@@ -83,7 +83,7 @@ export default function Dashboard({ setCurrentTab }) {
           extra="from last quarter"
         />
       </div>
-      <div className="w-full flex flex flex-col lg:flex-row px-5 justify-around">
+      <div className="w-full flex flex-col lg:flex-row px-5 justify-around">
         <div className="bg-white shadow-md rounded-lg w-full flex-1 m-2 p-4">
           <div className="flex justify-between p-2 justify-items-center mb-4">
             <span className="font-bold text-lg">Stocks</span>

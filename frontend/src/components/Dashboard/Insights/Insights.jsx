@@ -5,16 +5,18 @@ import { getPurchases } from "../../../actions/purchased";
 import LogsSkeleton from "../Logs/LogsSkeleton";
 import InsightsChart from "./InsightsChart";
 import InsightsSkeleton from "./InsightsSkeleton";
+import { getSurveyById } from "../../../actions/survey";
 
 const Insights = (props) => {
   const dispatch = useDispatch();
   const purchases = useSelector((state) => state.purchasedReducer);
   const { user } = props;
   const logs = useSelector((state) => state.logsReducer);
-  console.log("logs", logs);
+  const survey = useSelector((state) => state.surveyReducer);
 
   useEffect(() => {
     dispatch(getLogs());
+    dispatch(getSurveyById());
     dispatch(getPurchases());
   }, [dispatch]);
 
@@ -31,14 +33,14 @@ const Insights = (props) => {
 
   return (
     <>
-      <div className="gap-4 flex-col lg:flex lg:flex-row">
-        <div className="max-w-lg bg-white rounded-lg shadow dark:bg-gray-800 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 dark:bg-gray-800">
+        <div className="max-w-lg bg-white rounded-lg shadow dark:bg-gray-900 w-full">
           <div className="bg-white dark:bg-gray-900">
             <div className="container px-6 py-4 mx-auto">
               <h2 className="text-left text-xl font-bold text-gray-700 capitalize dark:text-gray-200 mb-2 pb-2">
                 Stock Insights
               </h2>
-              <div className="text-xs overflow-auto max-h-96">
+              <div className="text-xs overflow-auto">
                 <div className="rounded-lg flex flex-col sm:flex-row ">
                   <span className="w-full sm:w-1/2 h-12 relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight flex items-center justify-center">
                     <span
@@ -81,38 +83,71 @@ const Insights = (props) => {
                 </div>
               </div>
               {purchases?.length ? (
-                <div className="text-xs overflow-auto">
-                  <div className="rounded-lg flex">
-                    <InsightsChart
-                      id={"insights-on-purchases-bar-chart"}
-                      purchases={purchases}
-                      styleSet={"h-full w-full mt-8"}
-                    />
+                <>
+                  <div className="text-xs overflow-auto">
+                    <div className="rounded-lg flex">
+                      <InsightsChart
+                        id={"insights-on-purchases-bar-chart"}
+                        purchases={purchases}
+                        styleSet={"h-full w-full mt-8"}
+                      />
+                    </div>
                   </div>
-                </div>
+                </>
               ) : (
                 <InsightsSkeleton />
               )}
             </div>
           </div>
         </div>
-        <div className="max-w-lg bg-white rounded-lg shadow dark:bg-gray-800 w-full mt-4 lg:mt-0">
+        <div className="max-w-lg bg-white rounded-lg shadow dark:bg-gray-900 w-full mt-4 lg:mt-0">
+          <div className="bg-white dark:bg-gray-900">
+            <div className="container px-6 py-4 mx-auto">
+              <h2 className="text-left text-xl font-bold text-gray-700 capitalize dark:text-gray-200 mb-2 pb-2">
+                Preferences
+              </h2>
+              <div className="overflow-auto">
+                {survey.survey ? (
+                  Object.entries(survey.survey.response).map(
+                    ([key, value]) => (
+                      <div
+                        key={value}
+                        className="bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        <div className="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-xs">
+                          <p className="flex justify-between text-gray-900 dark:text-white whitespace-no-wrap">
+                            <div className="mr-9 font-bold font-l">{key}</div>
+                            <div className="font-semibold font-md">{key === "Level" ? survey.survey.response[key].split(" ")[0] : survey.survey.response[key]}</div>
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  )
+                ) : (
+                  <p className="text-gray-700 dark:text-gray-200">
+                    No preferences available.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-lg bg-white rounded-lg shadow dark:bg-gray-900 w-full mt-4 lg:mt-0">
           <div className="bg-white dark:bg-gray-900">
             <div className="container px-6 py-4 mx-auto">
               <h2 className="text-left text-xl font-bold text-gray-700 capitalize dark:text-gray-200 mb-2 pb-2">
                 Real-time Alerts
               </h2>
-              <div className="overflow-auto max-h-60">
+              <div className="overflow-auto">
                 {alerts.slice(0, 5).map((alert, index) => (
-                  <a
+                  <div
                     key={index}
-                    href="#"
                     className="block max-w-sm p-2 mb-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                   >
                     <p className="font-normal text-gray-700 dark:text-gray-400">
                       {alert}
                     </p>
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
@@ -127,18 +162,18 @@ const Insights = (props) => {
               {!logs?.length ? (
                 <LogsSkeleton />
               ) : (
-                <div className="overflow-auto max-h-60">
+                <div className="overflow-auto">
                   {logs.slice(0, 5).map((log) => (
                     <div
                       key={log._id}
                       className="bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
                     >
-                      <td className="px-5 py-5 border-b border-gray-200 dark:border-gray-800  text-xs ">
+                      <td className="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-xs">
                         <p className="text-gray-900 dark:text-white whitespace-no-wrap">
                           {log.logAction}
                         </p>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 dark:border-gray-800  text-xs ">
+                      <td className="px-5 py-5 border-b border-gray-200 dark:border-gray-800 text-xs">
                         <p className="text-gray-900 dark:text-white whitespace-no-wrap">
                           {new Date(log.loggedAt).toDateString()}{" "}
                           {new Date(log.loggedAt).toLocaleTimeString()}
@@ -151,7 +186,9 @@ const Insights = (props) => {
             </div>
           </div>
         </div>
+
       </div>
+
     </>
   );
 };

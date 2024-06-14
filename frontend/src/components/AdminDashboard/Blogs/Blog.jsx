@@ -51,6 +51,13 @@ export default function BlogParent() {
     }
   };
 
+  const sanitizeHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.innerHTML;
+  };
+
+  console.log("blogs", blogs);
+
   return (
     <>
       <div className="p-[2%] pe-3 overflow-y-scroll h-[100vh]">
@@ -63,7 +70,7 @@ export default function BlogParent() {
           </button>
         </div>
         <div className="container mx-auto p-4">
-          {Array.isArray(blogs) ? (
+          {(blogs.length > 0) ? (
             <div>
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {currentBlogs.map((blog) => (
@@ -82,9 +89,7 @@ export default function BlogParent() {
                         {blog.title}
                       </h5>
                       <div className="flex-grow">
-                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate-multiline h-12">
-                          {blog.content}
-                        </p>
+                        <div className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate-multiline h-12" dangerouslySetInnerHTML={{ __html: sanitizeHtml(blog.content) }}></div>
                       </div>
                       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                         {blog.tag}
@@ -138,6 +143,12 @@ export default function BlogParent() {
       >
         <BlogForm handleCloseModal={handleCloseModal} />
       </Modal>
+      <style jsx>{`
+        ::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </>
+
   );
 }

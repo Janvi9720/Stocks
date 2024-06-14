@@ -1,16 +1,23 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userSurvey } from "./../../constants/userSurvey.js";
+import { getSurveyById, createNewSurvey } from "../../actions/survey.js";
+import { getUserInfo } from "../../actions/auth";
 
 function ProjectPlannerForm() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
-    name: "",
-    number: "",
-    occupation: "",
-    completionDate: "",
-    projectDetails: "",
+    "Stock Market Sector" : "",
+    "Investment Strategy" : "",
+    "Real-time updates" : "",
+    "Updates Frequency" : "",
+    "Level" : "",
   });
 
   const handleChange = (e) => {
@@ -29,15 +36,21 @@ function ProjectPlannerForm() {
     setStep(step - 1);
   };
 
-  const redoStep = () => {
-    setStep(1);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/");
-    console.log(formData);
+    const formInput = { response: formData, comment: "" };
+    dispatch(createNewSurvey(formInput));
+    dispatch(getUserInfo());
+    navigate("/")
   };
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getSurveyById(id)).catch((error) =>
+        console.error("Failed to fetch survey:", error)
+      );
+    }
+  }, [dispatch, id]);
 
   return (
     <div
@@ -45,7 +58,7 @@ function ProjectPlannerForm() {
       style={{ backgroundColor: "#fff" }}
     >
       <div className="container max-w-screen-xl mx-auto my-auto relative flex flex-col w-4/5 p-[6%]">
-        <div className="text-3xl font-BG text-center ">
+        <div className="text-3xl font-BG text-center">
           Want to get personalized stock recommendations and <br /> insights
           tailored to your preferences?
         </div>
@@ -56,142 +69,44 @@ function ProjectPlannerForm() {
         >
           {step === 1 && (
             <motion.div
-              key={step} // Add this line
+              key={step}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="md:w-3/5 mx-auto py-12"
             >
-              <div className="text-base font-light text-center  ">Step 1/5</div>
+              <div className="text-base font-light text-center">Step 1/5</div>
               <div
                 className="mt-4 w-full h-2"
                 style={{ backgroundColor: "#e0cfc8" }}
               >
                 <div className="h-full bg-black rounded-3xl w-1/5"></div>
               </div>
-              <div className="mt-12 text-3xl  text-center">
-                Which stock market sectors are you primarily interested in?
+              <div className="mt-12 text-3xl text-center">
+                {userSurvey[0].label}
               </div>
-
               <div>
-                {/* Name input field */}
-                {/* <input
-                  type="text"
-                  placeholder="Name"
-                  name="name" // This should match your formData property
-                  className="mt-4 w-full border border-gray-300 rounded p-2 focus:outline-none"
-                  style={{ backgroundColor: "#e0cfc8" }}
-                  value={formData.name} // This correctly points to formData.name
-                  onChange={handleChange}
-                /> */}
-
-                <div class="flex items-center">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-1"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Technology
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Energy
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Healthcare
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Consumer Goods
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Others (please specify)
-                  </label>
-                </div>
+                {userSurvey[0].options.map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      id={`survey-${option.value}`}
+                      type="radio"
+                      checked={formData[userSurvey[0].questionId] === option.label}
+                      value={option.label}
+                      name={`${userSurvey[0].questionId}`}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor={`survey-${option.value}`}
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
               </div>
-
-              {/* Number input field */}
-              {/* <div>
-                <input
-                  type="text"
-                  placeholder="Number"
-                  name="number" // This should match your formData property
-                  className="mt-4 w-full border border-gray-300 rounded p-2 focus:outline-none"
-                  style={{ backgroundColor: "#e0cfc8" }}
-                  value={formData.number} // This should point to formData.number
-                  onChange={handleChange}
-                />
-              </div> */}
-
-              {/* Occupation input field */}
-              {/* <div>
-                <input
-                  type="text"
-                  placeholder="Occupation"
-                  name="occupation" // This should match your formData property
-                  className="mt-4 w-full border border-gray-300 rounded p-2 focus:outline-none"
-                  style={{ backgroundColor: "#e0cfc8" }}
-                  value={formData.occupation} // This should point to formData.occupation
-                  onChange={handleChange}
-                />
-              </div> */}
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -205,116 +120,56 @@ function ProjectPlannerForm() {
           )}
           {step === 2 && (
             <motion.div
-              key={step} // Add this line
+              key={step}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="md:w-3/5 mx-auto py-12"
             >
-              <div className="text-base font-light text-center  ">Step 2/5</div>
+              <div className="text-base font-light text-center">Step 2/5</div>
               <div
                 className="mt-4 w-full h-2"
                 style={{ backgroundColor: "#e0cfc8" }}
               >
                 <div className="h-full bg-black rounded-3xl w-2/5"></div>
               </div>
-              <div className="mt-12 text-3xl  text-center">
-                What is your investment strategy?
+              <div className="mt-12 text-3xl text-center">
+                {userSurvey[1].label}
               </div>
               <div>
-                <div class="flex items-center">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-1"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Long-term buy and hold
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Active trading
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Value investing
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Growth investing
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Other (please specify)
-                  </label>
-                </div>
+                {userSurvey[1].options.map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      id={`survey-${option.value}`}
+                      type="radio"
+                      value={option.label}
+                      checked={formData[userSurvey[1].questionId] === option.label}
+                      name={`${userSurvey[1].questionId}`}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor={`survey-${option.value}`}
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="flex justify-between mt-12">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className=" mr-4 bg-black text-white font-bold py-2 px-4 rounded"
+                  className="mr-4 bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Previous
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className=" bg-black text-white font-bold py-2 px-4 rounded"
+                  className="bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Next
                 </button>
@@ -323,101 +178,56 @@ function ProjectPlannerForm() {
           )}
           {step === 3 && (
             <motion.div
-              key={step} // Add this line
+              key={step}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="md:w-3/5 mx-auto py-12"
             >
-              <div className="text-base font-light text-center  ">Step 3/5</div>
+              <div className="text-base font-light text-center">Step 3/5</div>
               <div
                 className="mt-4 w-full h-2"
                 style={{ backgroundColor: "#e0cfc8" }}
               >
                 <div className="h-full bg-black rounded-3xl w-3/5"></div>
               </div>
-              <div className="mt-12 text-3xl  text-center">
-                How often would you like to receive stock updates and
-                predictions?
+              <div className="mt-12 text-3xl text-center">
+                {userSurvey[2].label}
               </div>
               <div>
-                <div class="flex items-center">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-1"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Daily
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Weekly
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Bi-weekly
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Monthly
-                  </label>
-                </div>
+                {userSurvey[2].options.map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      id={`survey-${option.value}`}
+                      type="radio"
+                      value={option.label}
+                      checked={formData[userSurvey[2].questionId] === option.label}
+                      name={`${userSurvey[2].questionId}`}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor={`survey-${option.value}`}
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="flex justify-between mt-12">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className=" mr-4 bg-black text-white font-bold py-2 px-4 rounded"
+                  className="mr-4 bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Previous
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className=" bg-black text-white font-bold py-2 px-4 rounded"
+                  className="bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Next
                 </button>
@@ -426,69 +236,56 @@ function ProjectPlannerForm() {
           )}
           {step === 4 && (
             <motion.div
-              key={step} // Add this line
+              key={step}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="md:w-3/5 mx-auto py-12"
             >
-              <div className="text-base font-light text-center  ">Step 4/5</div>
+              <div className="text-base font-light text-center">Step 4/5</div>
               <div
                 className="mt-4 w-full h-2"
                 style={{ backgroundColor: "#e0cfc8" }}
               >
                 <div className="h-full bg-black rounded-3xl w-4/5"></div>
               </div>
-              <div className="mt-12 text-3xl  text-center">
-                Would you prefer to receive real-time alerts for significant
-                stock market events?
+              <div className="mt-12 text-3xl text-center">
+                {userSurvey[3].label}
               </div>
               <div>
-                <div class="flex items-center">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-1"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Yes
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    No
-                  </label>
-                </div>
+                {userSurvey[3].options.map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      id={`survey-${option.value}`}
+                      type="radio"
+                      value={option.label}
+                      checked={formData[userSurvey[3].questionId] === option.label}
+                      name={`${userSurvey[3].questionId}`}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor={`survey-${option.value}`}
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="flex justify-between mt-12">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className=" mr-4 bg-black text-white font-bold py-2 px-4 rounded"
+                  className="mr-4 bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Previous
                 </button>
                 <button
                   type="button"
                   onClick={nextStep}
-                  className=" bg-black text-white font-bold py-2 px-4 rounded"
+                  className="bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Next
                 </button>
@@ -497,117 +294,61 @@ function ProjectPlannerForm() {
           )}
           {step === 5 && (
             <motion.div
-              key={step} // Add this line
+              key={step}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
               className="md:w-3/5 mx-auto py-12"
             >
-              <div className="text-base font-light text-center  ">Step 5/5</div>
+              <div className="text-base font-light text-center">Step 5/5</div>
               <div
                 className="mt-4 w-full h-2"
                 style={{ backgroundColor: "#e0cfc8" }}
               >
-                <div className="h-full bg-black rounded-3xl w-5/5"></div>
+                <div className="h-full bg-black rounded-3xl w-full"></div>
               </div>
-              <div className="mt-12 text-3xl  text-center">
-                What level of detail would you prefer for stock analysis and
-                predictions?
+              <div className="mt-12 text-3xl text-center">
+                {userSurvey[4].label}
               </div>
               <div>
-                <div class="flex items-center">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-1"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Beginner (simple explanations and basic insights)
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Intermediate (moderate level of technical analysis)
-                  </label>
-                </div>
-                <div class="flex items-center">
-                  <input
-                    checked
-                    id="default-radio-2"
-                    type="radio"
-                    value=""
-                    name="default-radio"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    for="default-radio-2"
-                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Advanced (in-depth technical and fundamental analysis)
-                  </label>
-                </div>
+                {userSurvey[4].options.map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      id={`survey-${option.value}`}
+                      type="radio"
+                      value={option.label}
+                      checked={formData[userSurvey[4].questionId] === option.label}
+                      name={`${userSurvey[4].questionId}`}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor={`survey-${option.value}`}
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="flex justify-between mt-12">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className=" mr-4 bg-black text-white font-bold py-2 px-4 rounded"
+                  className="mr-4 bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Previous
                 </button>
                 <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className=" bg-black text-white font-bold py-2 px-4 rounded"
+                  type="submit"
+                  className="bg-black text-white font-bold py-2 px-4 rounded"
                 >
                   Submit
                 </button>
               </div>
             </motion.div>
           )}
-          {/* {step === 4 && (
-            <motion.div
-              key={step} // Add this line
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="md:w-3/5 mx-auto py-12"
-            >
-              <div className="mt-12 text-base  text-center">
-                Your submission has been received! We will aim to get back to
-                you within 3 working days.
-              </div>
-              <div>
-                <div className="flex justify-between mt-12">
-                  <button
-                    type="button"
-                    onClick={redoStep}
-                    className=" bg-black text-white font-bold py-2 px-4 rounded"
-                  >
-                    Redo the planner
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )} */}
         </form>
       </div>
     </div>

@@ -6,6 +6,7 @@ import {
   TRANSACTION_ERROR_OCCURRED,
   LOG_ERROR_OCCURRED,
   BLOG_ERROR_OCCURRED,
+  SURVEY_ERROR_OCCURRED,
 } from "../constants/actions";
 
 // errors for authentication
@@ -77,6 +78,15 @@ const blogsErrorsReducer = (state = [], action) => {
   }
 };
 
+const surveyErrorsReducer = (state = [], action) => {
+  switch (action.type) {
+    case SURVEY_ERROR_OCCURRED:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export {
   authErrorsReducer,
   marketErrorsReducer,
@@ -85,4 +95,5 @@ export {
   transactionErrorsReducer,
   logsErrorsReducer,
   blogsErrorsReducer,
+  surveyErrorsReducer,
 };

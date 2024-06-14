@@ -1,5 +1,5 @@
 // import { jwtDecode } from "jwt-decode";
-import { fetchBlogs,fetchBlogsId, createBlog } from "../api/index";
+import { fetchBlogs, fetchBlogsId, createBlog } from "../api/index";
 import {
   BLOG_ERROR_OCCURRED,
   CREATE_BLOGS,
@@ -12,7 +12,6 @@ import {
 export const getBlogs = () => async (dispatch) => {
   try {
     const { data } = await fetchBlogs();
-    console.log("data blog", data);
     dispatch({ type: GET_ALL_BLOGS, payload: data });
   } catch (error) {
     if (error.response) {
@@ -65,8 +64,8 @@ export const createNewBlog = (formInput) => async (dispatch) => {
 export const removeBlog = (id) => async (dispatch) => {
   try {
     await removeBlog(id);
-    dispatch({ type: REMOVE_BLOGS, payload: null });
-    // router("/", { replace: true });
+    dispatch({ type: REMOVE_BLOGS, payload: id });
+    // router("/dashboard", { replace: true });
   } catch (error) {
     console.log(error.response.data.message);
     if (error.response) {

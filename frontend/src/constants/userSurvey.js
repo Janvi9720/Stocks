@@ -1,6 +1,6 @@
-export const UserSurvey = [
+export const userSurvey = [
     {
-        questionId: 1,
+        questionId: "Stock Market Sector",
         label: "Which stock market sectors are you primarily interested in?How useful is the prosthesis for the activity?",
         options: [
             {
@@ -29,7 +29,7 @@ export const UserSurvey = [
             },
         ],
     }, {
-        questionId: 2,
+        questionId: "Investment Strategy",
         label: "What is your investment strategy?",
         options: [
             {
@@ -54,7 +54,20 @@ export const UserSurvey = [
             },
         ],
     }, {
-        questionId: 3,
+        questionId: "Real-time updates",
+        label: "Would you prefer to receive real-time alerts for significant stock market events?",
+        options: [
+            {
+                label: "Yes",
+                value: 0,
+            },
+            {
+                label: "No",
+                value: 1,
+            },
+        ],
+    }, {
+        questionId: "Updates Frequency",
         label: "How often would you like to receive stock updates and predictions?",
         options: [
             {
@@ -75,20 +88,7 @@ export const UserSurvey = [
             },
         ],
     }, {
-        questionId: 4,
-        label: "Would you prefer to receive real-time alerts for significant stock market events?",
-        options: [
-            {
-                label: "Yes",
-                value: 0,
-            },
-            {
-                label: "No",
-                value: 1,
-            },
-        ],
-    }, {
-        questionId: 5,
+        questionId: "Level",
         label: "What level of detail would you prefer for stock analysis and predictions?",
         options: [
             {
