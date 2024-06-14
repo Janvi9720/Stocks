@@ -41,7 +41,7 @@ function ProjectPlannerForm() {
     const formInput = { response: formData, comment: "" };
     dispatch(createNewSurvey(formInput));
     dispatch(getUserInfo());
-    navigate("/dashboard")
+    navigate("/")
   };
 
   useEffect(() => {
