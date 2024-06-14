@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser, registerUser } from '../../actions/auth';
 import { AUTH_ERROR_OCCURRED } from '../../constants/actions';
 
-const initialState = { firstName: '', lastName: '', email: '', password: '' };
+const initialState = { firstName: '', lastName: '', email: '', password: '', userType: 'user' };
 
 const Auth = () => {
   const errors = useSelector((state) => state.authErrorsReducer);
