@@ -1,5 +1,5 @@
 // import { jwtDecode } from "jwt-decode";
-import { fetchBlogs, fetchBlogsId, createBlog } from "../api/index";
+import { fetchBlogs, fetchBlogsId, createBlog, removeBlog } from "../api/index";
 import {
   BLOG_ERROR_OCCURRED,
   CREATE_BLOGS,
@@ -61,11 +61,11 @@ export const createNewBlog = (formInput) => async (dispatch) => {
 };
 
 // DELETE Blogs
-export const removeBlog = (id) => async (dispatch) => {
+export const deleteBlog = (id, router) => async (dispatch) => {
   try {
     await removeBlog(id);
     dispatch({ type: REMOVE_BLOGS, payload: id });
-    // router("/dashboard", { replace: true });
+    router({pathname: "/blogs"}, { replace: true });
   } catch (error) {
     console.log(error.response.data.message);
     if (error.response) {

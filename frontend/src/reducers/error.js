@@ -72,7 +72,7 @@ const logsErrorsReducer = (state = [], action) => {
 const blogsErrorsReducer = (state = [], action) => {
   switch (action.type) {
     case BLOG_ERROR_OCCURRED:
-      return action.payload;
+      return action.payload || state;
     default:
       return state;
   }

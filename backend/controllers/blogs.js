@@ -35,14 +35,16 @@ export const getBlogById = async (req, res) => {
 
 export const createBlog = async (req, res) => {
   try {
-    const blog = await Blog.create({
+    const blog = await new Blog({
       title: req.body.title,
       content: req.body.content,
       tag: req.body.tag,
       image: req.file.filename,
       // email: req.body.email,
     });
-    res.status(201).json({ blog });
+    await blog.save();
+    const { _id, title, content, tag, image, create_at } = blog;
+    res.status(201).json({ _id, title, content, tag, image, create_at });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

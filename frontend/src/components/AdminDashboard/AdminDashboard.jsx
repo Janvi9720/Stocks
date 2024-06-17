@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Dashboard from "./Dashboard/Dashboard";
 import StockList from "./Stocks/StockList";
 import UserList from "./UserList/UserList";
-import Blogs from "./Blogs/Blog";
 
 export default function AdminDashboard() {
   function toggleSidebar() {
@@ -18,8 +17,6 @@ export default function AdminDashboard() {
         return <StockList />;
       case "userList":
         return <UserList />;
-      case "blogs":
-        return <Blogs />;
       default:
         return <Dashboard />;
     }
@@ -90,12 +87,6 @@ export default function AdminDashboard() {
                   className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer dark:hover:bg-[#1F2937]"
                 >
                   Stocks
-                </li>
-                <li
-                  onClick={() => setCurrentTab("blogs")}
-                  className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer dark:hover:bg-[#1F2937]"
-                >
-                  Blogs
                 </li>
               </nav>
             </div>

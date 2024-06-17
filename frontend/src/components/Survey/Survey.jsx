@@ -13,11 +13,11 @@ function ProjectPlannerForm() {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    "Stock Market Sector" : "",
-    "Investment Strategy" : "",
-    "Real-time updates" : "",
-    "Updates Frequency" : "",
-    "Level" : "",
+    "Stock Market Sector": "",
+    "Investment Strategy": "",
+    "Real-time updates": "",
+    "Updates Frequency": "",
+    Level: "",
   });
 
   const handleChange = (e) => {
@@ -41,31 +41,27 @@ function ProjectPlannerForm() {
     const formInput = { response: formData, comment: "" };
     dispatch(createNewSurvey(formInput));
     dispatch(getUserInfo());
-    navigate("/")
+    navigate("/");
   };
 
   useEffect(() => {
     if (id) {
-      dispatch(getSurveyById(id)).catch((error) =>
-        console.error("Failed to fetch survey:", error)
-      );
+      dispatch(getSurveyById(id));
     }
   }, [dispatch, id]);
 
   return (
     <div
-      className="relative min-h-screen flex"
-      style={{ backgroundColor: "#fff" }}
+      className="relative min-h-screen flex bg-white dark:bg-[#111827]"
     >
       <div className="container max-w-screen-xl mx-auto my-auto relative flex flex-col w-4/5 p-[6%]">
-        <div className="text-3xl font-BG text-center">
+        <div className="text-3xl font-BG text-center dark:text-white">
           Want to get personalized stock recommendations and <br /> insights
           tailored to your preferences?
         </div>
         <form
           onSubmit={handleSubmit}
-          className="mt-12 md:w-4/5 mx-auto rounded-3xl"
-          style={{ backgroundColor: "#ebe9d8" }}
+          className="mt-12 md:w-4/5 mx-auto rounded-3xl bg-[#E5E7EB] dark:bg-[#1F2937] dark:text-[#fff]"
         >
           {step === 1 && (
             <motion.div
@@ -77,22 +73,21 @@ function ProjectPlannerForm() {
               className="md:w-3/5 mx-auto py-12"
             >
               <div className="text-base font-light text-center">Step 1/5</div>
-              <div
-                className="mt-4 w-full h-2"
-                style={{ backgroundColor: "#e0cfc8" }}
-              >
-                <div className="h-full bg-black rounded-3xl w-1/5"></div>
+              <div className="mt-4 w-full h-2 bg-[#fff]">
+                <div className="h-full bg-black rounded-none w-1/5"></div>
               </div>
-              <div className="mt-12 text-3xl text-center">
+              <div className="mt-6 text-xl text-center">
                 {userSurvey[0].label}
               </div>
-              <div>
+              <div className="grid gap-[8%] p-[2%]">
                 {userSurvey[0].options.map((option) => (
                   <div key={option.value} className="flex items-center">
                     <input
                       id={`survey-${option.value}`}
                       type="radio"
-                      checked={formData[userSurvey[0].questionId] === option.label}
+                      checked={
+                        formData[userSurvey[0].questionId] === option.label
+                      }
                       value={option.label}
                       name={`${userSurvey[0].questionId}`}
                       onChange={handleChange}
@@ -128,23 +123,22 @@ function ProjectPlannerForm() {
               className="md:w-3/5 mx-auto py-12"
             >
               <div className="text-base font-light text-center">Step 2/5</div>
-              <div
-                className="mt-4 w-full h-2"
-                style={{ backgroundColor: "#e0cfc8" }}
-              >
-                <div className="h-full bg-black rounded-3xl w-2/5"></div>
+              <div className="mt-4 w-full h-2 bg-[#fff]">
+                <div className="h-full bg-black rounded-none w-2/5"></div>
               </div>
-              <div className="mt-12 text-3xl text-center">
+              <div className="mt-6 text-xl text-center">
                 {userSurvey[1].label}
               </div>
-              <div>
+              <div className="grid gap-[8%] p-[2%]">
                 {userSurvey[1].options.map((option) => (
                   <div key={option.value} className="flex items-center">
                     <input
                       id={`survey-${option.value}`}
                       type="radio"
                       value={option.label}
-                      checked={formData[userSurvey[1].questionId] === option.label}
+                      checked={
+                        formData[userSurvey[1].questionId] === option.label
+                      }
                       name={`${userSurvey[1].questionId}`}
                       onChange={handleChange}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -186,23 +180,22 @@ function ProjectPlannerForm() {
               className="md:w-3/5 mx-auto py-12"
             >
               <div className="text-base font-light text-center">Step 3/5</div>
-              <div
-                className="mt-4 w-full h-2"
-                style={{ backgroundColor: "#e0cfc8" }}
-              >
-                <div className="h-full bg-black rounded-3xl w-3/5"></div>
+              <div className="mt-4 w-full h-2 bg-[#fff]">
+                <div className="h-full bg-black rounded-none w-3/5"></div>
               </div>
-              <div className="mt-12 text-3xl text-center">
+              <div className="mt-6 text-xl text-center">
                 {userSurvey[2].label}
               </div>
-              <div>
+              <div className="grid gap-[8%] p-[2%]">
                 {userSurvey[2].options.map((option) => (
                   <div key={option.value} className="flex items-center">
                     <input
                       id={`survey-${option.value}`}
                       type="radio"
                       value={option.label}
-                      checked={formData[userSurvey[2].questionId] === option.label}
+                      checked={
+                        formData[userSurvey[2].questionId] === option.label
+                      }
                       name={`${userSurvey[2].questionId}`}
                       onChange={handleChange}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -244,23 +237,22 @@ function ProjectPlannerForm() {
               className="md:w-3/5 mx-auto py-12"
             >
               <div className="text-base font-light text-center">Step 4/5</div>
-              <div
-                className="mt-4 w-full h-2"
-                style={{ backgroundColor: "#e0cfc8" }}
-              >
-                <div className="h-full bg-black rounded-3xl w-4/5"></div>
+              <div className="mt-4 w-full h-2 bg-[#fff]">
+                <div className="h-full bg-black rounded-none w-4/5"></div>
               </div>
-              <div className="mt-12 text-3xl text-center">
+              <div className="mt-6 text-xl text-center">
                 {userSurvey[3].label}
               </div>
-              <div>
+              <div className="grid gap-[8%] p-[2%]">
                 {userSurvey[3].options.map((option) => (
                   <div key={option.value} className="flex items-center">
                     <input
                       id={`survey-${option.value}`}
                       type="radio"
                       value={option.label}
-                      checked={formData[userSurvey[3].questionId] === option.label}
+                      checked={
+                        formData[userSurvey[3].questionId] === option.label
+                      }
                       name={`${userSurvey[3].questionId}`}
                       onChange={handleChange}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -302,23 +294,22 @@ function ProjectPlannerForm() {
               className="md:w-3/5 mx-auto py-12"
             >
               <div className="text-base font-light text-center">Step 5/5</div>
-              <div
-                className="mt-4 w-full h-2"
-                style={{ backgroundColor: "#e0cfc8" }}
-              >
-                <div className="h-full bg-black rounded-3xl w-full"></div>
+              <div className="mt-4 w-full h-2 bg-[#fff]">
+                <div className="h-full bg-black rounded-none w-full"></div>
               </div>
-              <div className="mt-12 text-3xl text-center">
+              <div className="mt-6 text-xl text-center">
                 {userSurvey[4].label}
               </div>
-              <div>
+              <div className="grid gap-[8%] p-[2%]">
                 {userSurvey[4].options.map((option) => (
                   <div key={option.value} className="flex items-center">
                     <input
                       id={`survey-${option.value}`}
                       type="radio"
                       value={option.label}
-                      checked={formData[userSurvey[4].questionId] === option.label}
+                      checked={
+                        formData[userSurvey[4].questionId] === option.label
+                      }
                       name={`${userSurvey[4].questionId}`}
                       onChange={handleChange}
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"

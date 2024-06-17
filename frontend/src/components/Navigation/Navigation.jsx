@@ -15,7 +15,7 @@ const Navigation = () => {
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [menuHidden, setMenuHidden] = useState(true);
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-
+	
 	const logout = useCallback(
 		() => {
 			dispatch({ type: LOGOUT });
@@ -38,6 +38,7 @@ const Navigation = () => {
 			const decodedToken = decode(token);
 			if (decodedToken.exp * 1000 < new Date().getTime()) {
 				logout();
+				window.localStorage.clear();
 			}
 			dispatch(getUserInfo());
 		}

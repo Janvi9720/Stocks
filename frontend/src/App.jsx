@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./components/Dashboard/UserDashboard";
 import Auth from "./components/Auth/Auth";
 import Careers from "./components/Careers/Careers";
@@ -14,30 +14,20 @@ import PurchasedStocks from "./components/PurchasedStocks/PurchasedStocks";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import StockDetails from "./components/StockDetails/StockDetails";
 import TransactionForm from "./components/TransactionForm/TransactionForm";
-import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 import BlogDetail from "./components/AdminDashboard/Blogs/BlogDetails";
 import Survey from "./components/Survey/Survey"
 import { useDispatch } from 'react-redux';
 import { getUserInfo } from "./actions/auth";
 import BlogParent from "./components/AdminDashboard/Blogs/Blog";
-
-const ProtectedRoute = ({ isAuthenticated, children }) => {
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  return children;
-};
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
-  const [user] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getUserInfo());
     },[dispatch])
-    
-  const isAuthenticated = user ? true : false; // Replace with your authentication logic
+  
   const location = useLocation();
   const shouldRenderFooter = location.pathname !== "/dashboard";
   return (
@@ -58,19 +48,15 @@ const App = () => {
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  {user?.result?.userType === "admin" ? (
-                    <AdminDashboard />
-                  ) : (
+                <ProtectedRoute isDashboard={true}>
                     <Dashboard />
-                  )}
                 </ProtectedRoute>
               }
             />
             <Route
               path="/purchased"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProtectedRoute>
                   <PurchasedStocks />
                 </ProtectedRoute>
               }
@@ -78,7 +64,7 @@ const App = () => {
             <Route
               path="/purchased/:id"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProtectedRoute>
                   <PurchasedStockDetails />
                 </ProtectedRoute>
               }
@@ -86,7 +72,7 @@ const App = () => {
             <Route
               path="/transaction/:id"
               element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProtectedRoute>
                   <TransactionForm />
                 </ProtectedRoute>
               }

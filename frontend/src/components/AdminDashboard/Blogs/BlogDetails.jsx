@@ -11,10 +11,8 @@ const BlogDetail = () => {
   const error = useSelector((state) => state.blogsReducer.error);
 
   useEffect(() => {
-    if (!blog || blog._id !== id) {
-      dispatch(getBlogById(id));
-    }
-  }, [dispatch, id, blog]);
+    dispatch(getBlogById(id));
+  }, [dispatch, id]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -29,9 +27,7 @@ const BlogDetail = () => {
     return doc.body.innerHTML;
   };
 
-  // const handleDeleteBlog = () => {
-  //   dispatch(removeBlog(blog._id));
-  // }
+  
 
   return (
     <>
@@ -41,14 +37,12 @@ const BlogDetail = () => {
           style={{
             minHeight: "300px",
             backgroundImage: `url(${process.env.REACT_APP_STOCKS_API}?filename=${blog.image})`,
-            }}
-            title={blog.title}
-            ></div>
+          }}
+          title={blog.title}
+        ></div>
         <div className="max-w-3xl mx-auto">
           <div className="mt-3 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
             <div className="bg-white relative top-0 -mt-32 p-5 sm:p-10">
-            {/* <button>Update</button> */}
-            {/* <button onClick={handleDeleteBlog} className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-[#374151] rounded-md focus:outline-none focus:bg-gray-600">Delete</button> */}
               <h1 href="#" className="text-gray-900 font-bold text-3xl mb-2">
                 {blog.title}
               </h1>
