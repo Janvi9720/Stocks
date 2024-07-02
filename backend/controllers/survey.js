@@ -7,11 +7,13 @@ const router = express.Router();
 // GET
 export const getSurvey = async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const userId = req.params.id !== "undefined" ? req.params.id : req.userId;
+    const user = await User.findById(userId);
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const survey = await Survey.findOne({ userId: req.userId });
+    const survey = await Survey.findOne({ userId: userId });
     res.status(200).json(survey);
   } catch (error) {
     res

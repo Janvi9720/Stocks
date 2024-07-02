@@ -3,8 +3,10 @@ import { GET_ALL_LOGS, LOG_ERROR_OCCURRED } from '../constants/actions';
 
 // GET /logs
 export const getLogs = () => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await fetchLogs();
+    const { data } = await fetchLogs(user.token);
     dispatch({ type: GET_ALL_LOGS, payload: data });
   } catch (error) {
     if (error.response) {

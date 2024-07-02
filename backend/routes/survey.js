@@ -1,10 +1,10 @@
 import express from 'express';
 import { getSurvey, addSurvey } from '../controllers/survey.js';
-import auth from "../middleware/auth.js";
+import { jwtCheck, jwtParse } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get('/',auth, getSurvey);
-router.post('/',auth, addSurvey);
+router.get('/:id', jwtCheck, jwtParse, getSurvey);
+router.post('/', jwtCheck, jwtParse, addSurvey);
 
 export default router;

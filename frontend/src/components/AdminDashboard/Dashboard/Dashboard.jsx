@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
-import { StashCard } from "./../../Common/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { getStocks } from "./../../../actions/stocks";
 import { getUserList } from "../../../actions/auth";
 import { getLogs } from "../../../actions/logs";
+import { getStocks } from "./../../../actions/stocks";
+import { StashCard } from "./../../Common/Card";
 
 export default function Dashboard({ setCurrentTab }) {
   const stocks = useSelector((state) => state.stocksReducer);
-  const users = useSelector((state) => state.authReducer);
+  const users = useSelector((state) => state.AuthReducer);
   const logs = useSelector((state) => state.logsReducer);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserList());
     dispatch(getLogs());
     dispatch(getStocks());
+    dispatch(getUserList());
+
   }, [dispatch]);
 
   const renderStockItem = (stock) => (
@@ -59,6 +60,11 @@ export default function Dashboard({ setCurrentTab }) {
       </span>
     </>
   );
+
+  function SetTab(tabName) {
+    setCurrentTab(tabName);
+  }
+
   return (
     <>
       <div className="w-full g-3 flex flex-col md:flex-row p-5">
@@ -87,15 +93,18 @@ export default function Dashboard({ setCurrentTab }) {
         <div className="bg-white shadow-md rounded-lg w-full flex-1 m-2 p-4">
           <div className="flex justify-between p-2 justify-items-center mb-4">
             <span className="font-bold text-lg">Stocks</span>
-            <span className="text-gray-500 font-semibold text-sm mt-1">
+            <div
+              className="text-gray-500 font-semibold text-sm mt-1 cursor-pointer"
+              onClick={() => SetTab("stocksList")}
+            >
               View All
-            </span>
+            </div>
           </div>
           {stocks &&
             stocks
               .slice(0, 5)
               .map((item, index) => (
-                <div className="flex justify-between items-center mb-2">
+                <div key={index} className="flex justify-between items-center mb-2">
                   {renderStockItem(item)}
                 </div>
               ))}
@@ -103,29 +112,37 @@ export default function Dashboard({ setCurrentTab }) {
         <div className="bg-white shadow-md rounded-lg w-full flex-1 m-2 p-4">
           <div className="flex justify-between p-2 justify-items-center mb-4">
             <span className="font-bold text-lg">Subscribers</span>
-            <span className="text-gray-500 font-semibold text-sm mt-1">
+            <div
+              className="text-gray-500 font-semibold text-sm mt-1 cursor-pointer"
+              onClick={() => SetTab("userList")}
+            >
               View All
-            </span>
+            </div>
           </div>
           {Array.isArray(users) &&
-            users.map((item, index) => (
-              <div className="flex justify-between items-center mb-2">
-                {renderSubscriberItem(item)}
-              </div>
-            ))}
+            users
+              .slice(0, 5)
+              .map((item, index) => (
+                <div key={index} className="flex justify-between items-center mb-2">
+                  {renderSubscriberItem(item)}
+                </div>
+              ))}
         </div>
         <div className="bg-white shadow-md rounded-lg w-full flex-1 m-2 p-4">
           <div className="flex justify-between p-2 justify-items-center mb-4">
             <span className="font-bold text-lg">Recent Activity</span>
-            <span className="text-gray-500 font-semibold text-sm mt-1">
+            <div
+              className="text-gray-500 font-semibold text-sm mt-1 cursor-pointer"
+              onClick={() => SetTab("logList")}
+            >
               View All
-            </span>
+            </div>
           </div>
           {logs &&
             logs
               .slice(0, 5)
               .map((item, index) => (
-                <div className="flex justify-between items-center mb-2">
+                <div key={index} className="flex justify-between items-center mb-2">
                   {renderRecentActivityItem(item)}
                 </div>
               ))}

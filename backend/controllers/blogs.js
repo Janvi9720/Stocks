@@ -50,6 +50,32 @@ export const createBlog = async (req, res) => {
   }
 };
 
+export const updateBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, tag } = req.body;
+    console.log("req.files", req.files);
+    console.log("req.file", req.file);
+    const { filename } = req.file
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { title, content, tag, filename },
+      { new: true }
+    );
+
+    if (!updatedBlog) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Blog not found" });
+    }
+
+    res.status(200).json(updatedBlog);
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
+};
+
 export const removeBlog = async (req, res) => {
   try {
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id);

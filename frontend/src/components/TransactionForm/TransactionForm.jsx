@@ -8,7 +8,6 @@ import { getUserInfo } from "../../actions/auth";
 import { getPurchase, addPurchase, updatePurchase, removePurchase } from '../../actions/purchased';
 import { PURCHASED_ERROR_OCCURRED } from "../../constants/actions";
 
-
 const initialState = { stockId: null, sharesBought: 0 };
 
 const TransactionForm = () => {

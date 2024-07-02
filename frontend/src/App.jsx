@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./components/Dashboard/UserDashboard";
 import Auth from "./components/Auth/Auth";
@@ -15,21 +15,55 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import StockDetails from "./components/StockDetails/StockDetails";
 import TransactionForm from "./components/TransactionForm/TransactionForm";
 import BlogDetail from "./components/AdminDashboard/Blogs/BlogDetails";
-import Survey from "./components/Survey/Survey"
-import { useDispatch } from 'react-redux';
-import { getUserInfo } from "./actions/auth";
+import Survey from "./components/Survey/Survey";
 import BlogParent from "./components/AdminDashboard/Blogs/Blog";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import { Auth0Context } from "./react-auth0-spa";
 
 const App = () => {
-  const dispatch = useDispatch();
+  const { loading } = useContext(Auth0Context);
 
-  useEffect(() => {
-    dispatch(getUserInfo());
-    },[dispatch])
-  
   const location = useLocation();
   const shouldRenderFooter = location.pathname !== "/dashboard";
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex justify-center items-center h-[100vh]">
+          <div className="loader"></div>
+        </div>
+        <style jsx>{`
+          .loader {
+            width: 120px;
+            aspect-ratio: 1;
+            --c: no-repeat linear-gradient(#367BF3 0 0);
+            background: var(--c) 0% 100%, var(--c) 50% 100%, var(--c) 100% 100%;
+            animation: l2 1s infinite linear;
+          }
+          @keyframes l2 {
+            0% {
+              background-size: 20% 100%, 20% 100%, 20% 100%;
+            }
+            20% {
+              background-size: 20% 60%, 20% 100%, 20% 100%;
+            }
+            40% {
+              background-size: 20% 80%, 20% 60%, 20% 100%;
+            }
+            60% {
+              background-size: 20% 100%, 20% 80%, 20% 60%;
+            }
+            80% {
+              background-size: 20% 100%, 20% 100%, 20% 80%;
+            }
+            100% {
+              background-size: 20% 100%, 20% 100%, 20% 100%;
+            }
+          }
+        `}</style>
+      </>
+    );
+  }
   return (
     <>
       <Navigation />
@@ -49,7 +83,7 @@ const App = () => {
               path="/dashboard"
               element={
                 <ProtectedRoute isDashboard={true}>
-                    <Dashboard />
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />

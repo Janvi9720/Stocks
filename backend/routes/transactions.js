@@ -1,10 +1,10 @@
 import express from 'express';
 
 import { getTransactions } from '../controllers/transactions.js';
-import auth from "../middleware/auth.js";
+import { jwtCheck, jwtParse } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get('/', auth, getTransactions);
+router.get('/', jwtCheck, jwtParse, getTransactions);
 
 export default router;

@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userSurvey } from "./../../constants/userSurvey.js";
 import { getSurveyById, createNewSurvey } from "../../actions/survey.js";
 import { getUserInfo } from "../../actions/auth";
+import { useAuth0 } from "../../react-auth0-spa.js";
 
-function ProjectPlannerForm() {
+function SurveyForm() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { user } = useAuth0();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -38,17 +39,17 @@ function ProjectPlannerForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formInput = { response: formData, comment: "" };
+    const formInput = { response: formData, comment: ""};
     dispatch(createNewSurvey(formInput));
     dispatch(getUserInfo());
     navigate("/");
   };
 
   useEffect(() => {
-    if (id) {
-      dispatch(getSurveyById(id));
+    if (user) {
+      dispatch(getSurveyById(user?.result._id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, user]);
 
   return (
     <div
@@ -346,4 +347,4 @@ function ProjectPlannerForm() {
   );
 }
 
-export default ProjectPlannerForm;
+export default SurveyForm;

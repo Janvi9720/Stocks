@@ -3,8 +3,10 @@ import { GET_ALL_TRANSACTIONS, TRANSACTION_ERROR_OCCURRED } from '../constants/a
 
 // GET /transactions
 export const getTransactions = () => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await fetchTransactions();
+    const { data } = await fetchTransactions(user.token);
     dispatch({ type: GET_ALL_TRANSACTIONS, payload: data });
   } catch (error) {
     if (error.response) {

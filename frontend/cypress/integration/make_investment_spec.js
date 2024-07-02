@@ -8,7 +8,7 @@ describe('make investment', () => {
 
   it('user can invest in a stock', () => {
     // initial visit
-    cy.visit('http://localhost:3000/');
+    cy.visit(process.env.REACT_APP_AUTH0_CALLBACK_URL);
 
     // login with guest account
     cy.findByRole('link', { name: /login \/ register/i }).click();

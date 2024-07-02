@@ -6,7 +6,9 @@ import {
   getBlogById,
   createBlog,
   removeBlog,
+  updateBlog
 } from "../controllers/blogs.js";
+import { jwtCheck, jwtParse} from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -22,13 +24,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// router.get('/:filename', (req, res) => {
-//   console.log("req", req);
-//   res.sendFile(path.join('./uploads/' + req.params.filename));
-// });
 router.get("/", getBlogs);
 router.get("/:id", getBlogById);
-router.post("/", upload.single("media"), createBlog);
-router.delete("/:id", removeBlog);
+router.post("/", jwtCheck, jwtParse, upload.single("media"), createBlog);
+router.put("/:id", jwtCheck, jwtParse, upload.single("media"), updateBlog);
+router.delete("/:id", jwtCheck, jwtParse, removeBlog);
+
 
 export default router;

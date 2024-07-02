@@ -26,12 +26,12 @@ const StockView = () => {
   const [sortByPrice, setSortByPrice] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [stocksPerPage] = useState(12);
-  const users = useSelector((state) => state.authReducer);
-
+  const users = useSelector((state) => state.AuthReducer);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getStocks(), getUserList());
+    dispatch(getUserList());
+    dispatch(getStocks());
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,11 +45,11 @@ const StockView = () => {
 
   const filteredStocks = stocks?.length
     ? stocks.filter((stock) => {
-        return (
-          stock.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-          stock.ticker.toLowerCase().includes(searchFilter.toLowerCase())
-        );
-      })
+      return (
+        stock.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        stock.ticker.toLowerCase().includes(searchFilter.toLowerCase())
+      );
+    })
     : null;
 
   const sortByField = (field, reverse) => {
@@ -74,24 +74,18 @@ const StockView = () => {
 
   return (
     <>
-      {!(users.authData && users.authData.userType) === "admin" && (
+      {(users.authData && users.authData.userType) === "user" && (
         <TopInfoSection count={stocks?.length ? stocks.length : 0} />
       )}
       <div
         className={
-          users.authData && users.authData.userType === "admin"
-            ? "bg-white dark:bg-gray-800"
-            : "w-full h-[100vh]"
+          users.authData && users.authData.userType === "user"
+            ? "w-full h-[100vh]"
+            : "bg-white dark:bg-gray-800"
         }
       >
         <div className="container mx-auto px-4 sm:px-8 w-full">
-          <div
-            className={
-              !(users.authData && users.authData.userType === "admin")
-                ? "py-8"
-                : "py-8 overflow-y-scroll h-[100vh]"
-            }
-          >
+          <div className="pt-[20%] md:pt-[10%] lg:pt-[8%] overflow-y-scroll h-[100vh]">
             <div className="flex flex-row mb-1 sm:mb-0 justify-between w-full">
               <input
                 onChange={searchStocks}
@@ -296,6 +290,11 @@ const StockView = () => {
           </div>
         </div>
       </div>
+      <style jsx="true">{`
+        ::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </>
   );
 };

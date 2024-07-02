@@ -4,6 +4,11 @@ const userSchema = mongoose.Schema({
   id: {
     type: String,
   },
+  auth0Id: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -14,10 +19,6 @@ const userSchema = mongoose.Schema({
     required: true,
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/]
   },
-  password: {
-    type: String,
-    required: true
-  },
   coins: {
     type: Number,
     required: true,
@@ -26,7 +27,8 @@ const userSchema = mongoose.Schema({
   userType: {
     type: String,
     required: true
-  }
+  },
+  image: { type: String },
 });
 
 let User = mongoose.model('User', userSchema);

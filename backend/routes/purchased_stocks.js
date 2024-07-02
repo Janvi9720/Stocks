@@ -7,14 +7,14 @@ import {
   updatePurchasedStock,
   removePurchasedStock
 } from '../controllers/purchased_stocks.js';
-import auth from "../middleware/auth.js";
+import { jwtCheck, jwtParse } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get('/', auth, getPurchasedStocks);
-router.get('/:id', auth, getPurchasedStock);
-router.post('/', auth, addPurchasedStock);
-router.patch('/:id', auth, updatePurchasedStock);
-router.delete('/:id', auth, removePurchasedStock);
+router.get('/', jwtCheck, jwtParse, getPurchasedStocks);
+router.get('/:id', jwtCheck, jwtParse, getPurchasedStock);
+router.post('/', jwtCheck, jwtParse, addPurchasedStock);
+router.patch('/:id', jwtCheck, jwtParse, updatePurchasedStock);
+router.delete('/:id', jwtCheck, jwtParse, removePurchasedStock);
 
 export default router;

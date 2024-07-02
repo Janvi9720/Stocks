@@ -1,6 +1,7 @@
 import {
   GET_ALL_BLOGS,
   CREATE_BLOGS,
+  UPDATE_BLOG,
   REMOVE_BLOGS,
   GET_BLOG_BY_ID,
   BLOG_ERROR_OCCURRED
@@ -27,6 +28,12 @@ const blogsReducer = (state = initialState, action) => {
         error: null
       };
     case CREATE_BLOGS:
+      return {
+        ...state,
+        blogs: [action.payload, ...state.blogs],
+        error: null
+      };
+    case UPDATE_BLOG:
       return {
         ...state,
         blogs: [action.payload, ...state.blogs],

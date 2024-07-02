@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard/Dashboard";
+import LogList from "./Logs/LogList";
 import StockList from "./Stocks/StockList";
 import UserList from "./UserList/UserList";
 
 export default function AdminDashboard() {
+  const [currentTab, setCurrentTab] = useState("dashboard");
+  const [openUserList, setOpenUserList] = useState(false);
+
   function toggleSidebar() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("-translate-x-full");
   }
-
-  const [currentTab, setCurrentTab] = useState("dashboard");
 
   const shownTab = (tab) => {
     switch (tab) {
@@ -17,8 +19,16 @@ export default function AdminDashboard() {
         return <StockList />;
       case "userList":
         return <UserList />;
+      case "logList":
+        return <LogList />;
       default:
-        return <Dashboard />;
+        return (
+          <Dashboard
+            openUserList={openUserList}
+            setOpenUserList={setOpenUserList}
+            setCurrentTab={setCurrentTab}
+          />
+        );
     }
   };
 
@@ -47,9 +57,9 @@ export default function AdminDashboard() {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
@@ -71,7 +81,10 @@ export default function AdminDashboard() {
               {/* <!-- nav --> */}
               <nav>
                 <li
-                  onClick={() => setCurrentTab("dashboard")}
+                  onClick={() => {
+                    setCurrentTab("dashboard");
+                    setOpenUserList(false);
+                  }}
                   className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer dark:hover:bg-[#1F2937]"
                 >
                   Dashboard
@@ -88,6 +101,12 @@ export default function AdminDashboard() {
                 >
                   Stocks
                 </li>
+                <li
+                  onClick={() => setCurrentTab("logList")}
+                  className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white cursor-pointer dark:hover:bg-[#1F2937]"
+                >
+                  Logs
+                </li>
               </nav>
             </div>
 
@@ -95,7 +114,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-      <style jsx>{`
+      <style jsx="true">{`
         ::-webkit-scrollbar {
           display: none;
         }

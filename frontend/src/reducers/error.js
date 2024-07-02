@@ -43,7 +43,7 @@ const purchasedErrorsReducer = (state = [], action) => {
 const userErrorsReducer = (state = [], action) => {
   switch (action.type) {
     case USER_ERROR_OCCURRED:
-      return action.payload;
+      return action.payload ?? state;
     default:
       return state;
   }

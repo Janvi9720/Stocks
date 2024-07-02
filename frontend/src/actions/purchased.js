@@ -3,8 +3,10 @@ import { GET_ALL_PURCHASED, GET_ONE_PURCHASED, ADD_PURCHASED, UPDATE_PURCHASED, 
 
 // GET /purchased
 export const getPurchases = () => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await purchasedStocks();
+    const { data } = await purchasedStocks(user.token);
     dispatch({ type: GET_ALL_PURCHASED, payload: data });
   } catch (error) {
     if (error.response) {
@@ -17,8 +19,10 @@ export const getPurchases = () => async (dispatch) => {
 
 // GET /purchased/:id
 export const getPurchase = (id) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await purchasedStock(id);
+    const { data } = await purchasedStock(id, user.token);
     dispatch({ type: GET_ONE_PURCHASED, payload: data });
   } catch (error) {
     if (error.response) {
@@ -31,8 +35,10 @@ export const getPurchase = (id) => async (dispatch) => {
 
 // POST /purchased
 export const addPurchase = (formInput, router) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await addPurchasedStock(formInput);
+    const { data } = await addPurchasedStock(formInput, user.token);
     dispatch({ type: ADD_PURCHASED, payload: data });
     router({ pathname: `/purchased/${data.stock}`, state: { updated: true } },  {replace: true});
   } catch (error) {
@@ -46,8 +52,10 @@ export const addPurchase = (formInput, router) => async (dispatch) => {
 
 // PATCH /purchased/:id
 export const updatePurchase = (id, formInput, router, sharesBought, sharesHeld) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    const { data } = await updatePurchasedStock(id, formInput);
+    const { data } = await updatePurchasedStock(id, formInput, user.token);
     dispatch({ type: UPDATE_PURCHASED, payload: data });
     if (sharesBought < 0 && (Math.abs(sharesBought) >= sharesHeld)) {
       router({ pathname: '/purchased/', state: { updated: true } },  {replace: true});
@@ -65,8 +73,10 @@ export const updatePurchase = (id, formInput, router, sharesBought, sharesHeld) 
 
 // DELETE /purchased/:id
 export const removePurchase = (id, router) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
+
   try {
-    await removePurchasedStock(id);
+    await removePurchasedStock(id, user.token);
     dispatch({ type: REMOVE_PURCHASED, payload: null });
     router({ pathname: '/purchased/', state: { updated: true }},  {replace: true});
   } catch (error) {

@@ -34,7 +34,7 @@ const Account = (props) => {
       "[WARNING] Are you sure you want to remove this account? This action cannot be undone!"
     );
     if (confirmAccountRemoval) {
-      dispatch(removeUserAccount(navigate));
+      dispatch(removeUserAccount("", navigate));
     }
   };
 
@@ -58,7 +58,7 @@ const Account = (props) => {
                       className="text-gray-700 dark:text-gray-200"
                       htmlFor="firstName"
                     >
-                      First Name
+                      Nickname
                     </label>
                     <input
                       onChange={handleChange}
@@ -66,7 +66,7 @@ const Account = (props) => {
                       id="firstName"
                       type="text"
                       name="firstName"
-                      placeholder={String(user?.result.name).split(" ")[0]}
+                      placeholder={String(user?.result.name)}
                       className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                     />
                   </div>
@@ -76,7 +76,7 @@ const Account = (props) => {
                       className="text-gray-700 dark:text-gray-200"
                       htmlFor="lastName"
                     >
-                      Last Name
+                      Email
                     </label>
                     <input
                       onChange={handleChange}
@@ -84,7 +84,7 @@ const Account = (props) => {
                       id="lastName"
                       type="text"
                       name="lastName"
-                      placeholder={String(user?.result.name).split(" ")[1]}
+                      placeholder={user?.result?.email}
                       className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                     />
                   </div>

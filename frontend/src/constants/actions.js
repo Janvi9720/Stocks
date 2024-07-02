@@ -38,6 +38,7 @@ export const SURVEY_ERROR_OCCURRED = 'SURVEY_ERROR_OCCURRED';
 export const GET_ALL_BLOGS = 'GET_ALL_BLOGS';
 export const GET_BLOG_BY_ID = 'GET_BLOG_BY_ID';
 export const CREATE_BLOGS = 'CREATE_BLOGS';
+export const UPDATE_BLOG = 'UPDATE_BLOG';
 export const REMOVE_BLOGS = 'REMOVE_BLOGS';
 
 //Survey actions

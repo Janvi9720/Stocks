@@ -1,35 +1,44 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { auth } from "express-oauth2-jwt-bearer";
+import User from "../models/user.js";
 
 dotenv.config();
-const jwtSecret = process.env.JWT_SECRET;
 
-const auth = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-    const isCustomAuth = token.length < 500;
-    let contentDecoded;
+export const jwtCheck = auth({
+  audience: [
+    process.env.REACT_APP_AUTH0_AUDIENCE,
+    `https://${process.env.REACT_APP_AUTH0_DOMAIN}/userinfo`,
+  ],
+  issuerBaseURL: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/`,
+  tokenSigningAlg: 'RS256'
+});
 
-    if (token && isCustomAuth) {
-      contentDecoded = jwt.verify(token, jwtSecret);
-      req.userId = contentDecoded?.id;
-    } else {
-      contentDecoded = jwt.decode(token);
-      req.userId = contentDecoded?.sub;
-    }
-    if (req.path === "/user/userlist") {
-      const user = await User.findById(req.userId);
-      if (user && user.userType === "admin") {
-        next();
-      } else {
-        res.status(403).json({ message: "You are not authorized to access this resource" });
-      }
-    } else {
-      next();
-    }
-  } catch (error) {
-    res.status(403).json({ message: "Not authenticated!" });
+export const jwtParse = async(req, res, next) => {
+  const { authorization } = req.headers
+  
+  if(!authorization || !authorization.startsWith("Bearer ")) {
+      return res.sendStatus(401)
   }
-};
 
-export default auth;
+  const token = authorization.split(" ")[1]
+     
+  try {
+      const decoded = jwt.decode(token)
+      const auth0Id = decoded.sub
+
+      const user = await User.findOne({ auth0Id: auth0Id })
+
+      if(!user) {
+          return res.sendStatus(401)
+      }
+
+      req.auth0Id =auth0Id
+      req.userId = user._id.toString()
+      next()
+
+  } catch(error) {
+      return res.sendStatus(401)
+  }
+}
+
