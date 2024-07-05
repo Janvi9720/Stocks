@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { reducer } from './reducers';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext/ThemeContext';
 import { legacy_createStore as createStore , applyMiddleware, compose } from 'redux';
 import { Auth0Provider } from "./react-auth0-spa";
@@ -25,9 +25,9 @@ root.render(
       }}
     >
       <ThemeProvider>
-        <BrowserRouter basename="/">
+        <HashRouter basename="/">
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </ThemeProvider>
     </Auth0Provider>
   </Provider>
