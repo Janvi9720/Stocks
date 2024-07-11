@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { reducer } from './reducers';
-import { HashRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext/ThemeContext';
 import { legacy_createStore as createStore , applyMiddleware, compose } from 'redux';
 import { Auth0Provider } from "./react-auth0-spa";
@@ -23,11 +23,13 @@ root.render(
         redirect_uri: `${process.env.REACT_APP_AUTH0_CALLBACK_URL}`,
         audience: `${process.env.REACT_APP_AUTH0_AUDIENCE}`,
       }}
+      useRefreshTokens={true}
+      cacheLocation="localstorage"
     >
       <ThemeProvider>
-        <HashRouter basename="/">
+        <Router basename="/">
           <App />
-        </HashRouter>
+        </Router>
       </ThemeProvider>
     </Auth0Provider>
   </Provider>
