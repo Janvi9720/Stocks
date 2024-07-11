@@ -41,7 +41,8 @@ export const registerUser = (formInput) => async (dispatch) => {
   try {
     const { data } = await register(formInput, user.token);
     dispatch({ type: AUTH, data });
-    window.history.replaceState({}, document.title, '/');
+    // window.history.replaceState({}, document.title, '/');
+    window.location.reload();
   } catch (error) {
     if (error.response) {
       if(error.response.data.message === "User already exists."){
