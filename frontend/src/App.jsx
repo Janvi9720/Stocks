@@ -76,8 +76,15 @@ const App = () => {
     );
   }
 
-  if(isError){
-    return <NotVerified/>
+  if (isError) {
+    return (
+      <>
+        <Navigation />
+        <div className="font-inter">
+          <NotVerified />
+        </div>
+      </>
+    );
   }
   
   return (
