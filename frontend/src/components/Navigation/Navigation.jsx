@@ -17,8 +17,6 @@ const Navigation = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-  console.log("user", user);
-
   const logoutUser = useCallback(
     () => {
       dispatch({ type: LOGOUT });
@@ -49,9 +47,7 @@ const Navigation = () => {
       }
       dispatch(getUserInfo());
     }
-    setUser(JSON.parse(localStorage.getItem("profile")));
-    console.log("user 1", user);
-
+    setUser(JSON.parse(localStorage.getItem("profile")))
   }, [user?.token, location, logout, logoutUser, dispatch]);
 
   useEffect(() => {
