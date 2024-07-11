@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 
 const NotVerified = () => {
     const [error, setError] = useState('');
-    const [errorMsgDesc, setErrorMsgDesc] = useState('');
+    const [errorMsgDesc, setErrorMsgDesc] = useState('Something went wrong!');
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const errorMsg = params.get('error');
+        const errorDesc = params.get('error_description');
+
         setError(errorMsg)
-        if (errorMsg === 'email_not_verified') {
+        if (errorMsg === 'email_not_verified' || errorDesc === 'email_not_verified') {
             setErrorMsgDesc('Please verify your email before logging in.');
         }
     }, []);
