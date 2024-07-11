@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./components/Dashboard/UserDashboard";
 // import Auth from "./components/Auth/Auth";
@@ -25,6 +25,15 @@ import NotVerified from "./components/Error/NotVerified"
 const App = () => {
   const { loading } = useContext(Auth0Context);
   const location = useLocation();
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const errorMsg = params.get('error');
+    if(errorMsg){
+      setIsError(true);
+    }
+  }, []);
 
   const shouldRenderFooter = location.pathname !== "/dashboard";
 
@@ -66,6 +75,11 @@ const App = () => {
       </>
     );
   }
+
+  if(isError){
+    return <NotVerified/>
+  }
+  
   return (
     <>
       <Navigation />
