@@ -44,7 +44,7 @@ export const Auth0Provider = ({
                 let profile = localStorage.getItem("profile") ? JSON.parse(localStorage.getItem("profile")) : {}
                 
                 profile.token = accessToken;
-                profile['result'].name = user.nickname;
+                // profile['result'].name = user.nickname;
                 localStorage.setItem("profile", JSON.stringify(profile));
                 // Add User from Auth0 to our database if they don't exist yet
                 dispatch(registerUser({
