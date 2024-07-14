@@ -46,7 +46,6 @@ const Insights = (props) => {
                       className="absolute inset-0 bg-yellow-200 dark:bg-yellow-700 opacity-50 rounded-full"
                     ></span>
                     <span className="text-lg sm:text-xl relative text-yellow-600 dark:text-yellow-400">
-                      ${user?.coins?.toFixed(2)}
                     </span>
                   </span>
                   {user?.result?.coins > 100000 ? (
