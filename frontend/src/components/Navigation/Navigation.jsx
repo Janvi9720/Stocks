@@ -28,9 +28,6 @@ const Navigation = () => {
   );
 
   useEffect(() => {
-    // if(isAuthenticated && !user?.result){
-    // 	window.location.reload();
-    // }
     setMenuHidden(true);
     return () => {
       setMenuHidden(true);
@@ -47,7 +44,8 @@ const Navigation = () => {
       }
       dispatch(getUserInfo());
     }
-    setUser(JSON.parse(localStorage.getItem("profile")))
+    setUser(JSON.parse(localStorage.getItem("profile")));
+
   }, [user?.token, location, logout, logoutUser, dispatch]);
 
   useEffect(() => {

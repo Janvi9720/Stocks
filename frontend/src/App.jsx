@@ -30,7 +30,7 @@ const App = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const errorMsg = params.get('error');
-    if(errorMsg){
+    if (errorMsg) {
       setIsError(true);
     }
   }, []);
@@ -86,7 +86,7 @@ const App = () => {
       </>
     );
   }
-  
+
   return (
     <>
       <Navigation />

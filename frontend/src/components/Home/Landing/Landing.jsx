@@ -9,7 +9,7 @@ import { useAuth0 } from "../../../react-auth0-spa";
 const Landing = () => {
   const [user] = useState(JSON.parse(localStorage.getItem("profile")));
   const survey = useSelector((state) => state.surveyReducer);
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,12 +51,12 @@ const Landing = () => {
                     Start Survey
                   </Link>
                 ) : (
-                  <Link
-                    to="/"
+                  <button
                     className="mt-2 sm:mt-0 px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md dark:bg-blue-800 hover:bg-blue-500 dark:hover:bg-blue-700 focus:outline-none focus:bg-blue-500 dark:focus:bg-blue-700"
+                    onClick={loginWithRedirect}  
                   >
                     Get Started
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>
